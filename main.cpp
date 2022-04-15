@@ -37,11 +37,6 @@ void configure_i2s() {
   // install I2S 0 driver, using event queue
   i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
 
-    adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_1);
-    adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_3);
-    adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_6);
-    adc_gpio_init(ADC_UNIT_1, ADC_CHANNEL_7);
-
   // ADC should use ADC_CHANNEL
   i2s_set_adc_mode(ADC_UNIT_1, ADC_CHANNEL);
   // The raw ADC data is written in DMA in inverted form. This add aninversion:
@@ -82,7 +77,7 @@ static const inline void ADC_Sampling(){
       i2s_adc_disable(I2S_NUM_0);
       int x = 0;
 
-      for (int i=0;i<NUM_SAMPLES;i++) {
+      for (int i=0;i<NUM_SAMPLES;i++) {  //There is a bug on the i2s. Get to re order samples https://github.com/espressif/esp-idf/issues/1911
         if (x==0)
         {Serial.println(i2s_read_buff[i+1]& 0xFFF);
         x++;
